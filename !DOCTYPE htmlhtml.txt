@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael Data Bundle Services</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #0b3d91, #1e40af, #0f172a);
+      color: white;
+    }
+    .container { max-width: 1200px; margin: auto; padding: 20px; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
+    .header h1 { font-size: 24px; font-weight: bold; }
+    .hero { text-align: center; margin-top: 40px; }
+    .hero h2 { font-size: 36px; margin-bottom: 10px; }
+    .hero p { font-size: 18px; color: #d1d5db; }
+    .card-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px; }
+    .card { background: rgba(255,255,255,0.1); border: 2px solid #fff; border-radius: 20px; padding: 20px; text-align: center; transition: transform 0.3s; cursor: pointer; }
+    .card:hover { transform: scale(1.05); }
+    .card h3 { font-size: 24px; margin-bottom: 10px; }
+    .card p { font-size: 18px; margin-bottom: 20px; }
+    .button { background: #10b981; color: white; padding: 10px 20px; border: none; border-radius: 15px; cursor: pointer; font-size: 16px; }
+    .button:hover { background: #059669; }
+    .working-hours { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; text-align: center; margin-top: 40px; border: 2px solid #fff; }
+    .whatsapp-button { position: fixed; bottom: 20px; right: 20px; background: #25D366; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; color: white; text-decoration: none; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+    .footer { text-align: center; margin-top: 60px; font-size: 16px; color: #d1d5db; }
+    .bundle-list { display: none; margin-top: 30px; }
+    .bundle-item { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .phone-input { width: 100%; padding: 10px; border-radius: 10px; border: none; margin-top: 10px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Michael Data Hub</h1>
+      <div>Log in</div>
+    </div><div class="hero">
+  <h2>Buy Affordable Data Bundles</h2>
+  <p>Get the best deals on data bundles. Fast, reliable activation. Stay connected with our affordable plans.</p>
+</div>
+
+<div class="working-hours">
+  <p><strong>Working Hours:</strong> 7:00 AM - 9:00 PM (Daily)</p>
+</div>
+
+<div class="card-container">
+  <div class="card" onclick="showBundles('MTN')">
+    <div style="background: #FBBF24; width: 80px; height: 80px; margin: auto; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: black; font-weight: bold; font-size: 20px;">MTN</div>
+    <h3>MTN Bundles</h3>
+    <p>6 bundles available</p>
+  </div>
+  <div class="card" onclick="showBundles('Telecel')">
+    <div style="background: #EF4444; width: 80px; height: 80px; margin: auto; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 20px;">Telecel</div>
+    <h3>Telecel Bundles</h3>
+    <p>7 bundles available</p>
+  </div>
+</div>
+
+<div class="bundle-list" id="bundleList">
+  <h3 id="bundleTitle">Bundles</h3>
+  <div id="bundlesContainer"></div>
+  <input type="text" id="phoneInput" class="phone-input" placeholder="Enter your phone number" />
+  <button class="button" onclick="orderBundle()" style="margin-top: 10px; width: 100%;">Order via WhatsApp</button>
+</div>
+
+  </div><a href="https://wa.me/233541712051" target="_blank" class="whatsapp-button">W</a>
+
+  <div class="footer">Contact: 0541712051 | Note: Bundle delivery is not instant.</div>  <script>
+    const bundlesData = {
+      MTN: [
+        { size: '1GB', price: 'GHC 5.5' },
+        { size: '2GB', price: 'GHC 11' },
+        { size: '3GB', price: 'GHC 16.5' },
+        { size: '4GB', price: 'GHC 22' },
+        { size: '5GB', price: 'GHC 27.5' },
+        { size: '6GB', price: 'GHC 33' },
+      ],
+      Telecel: [
+        { size: '500MB', price: 'GHC 3' },
+        { size: '1GB', price: 'GHC 6' },
+        { size: '2GB', price: 'GHC 12' },
+        { size: '3GB', price: 'GHC 18' },
+        { size: '5GB', price: 'GHC 30' },
+      ]
+    };
+
+    let selectedNetwork = '';
+    let selectedBundle = null;
+
+    function showBundles(network) {
+      selectedNetwork = network;
+      const container = document.getElementById('bundlesContainer');
+      container.innerHTML = '';
+      bundlesData[network].forEach(bundle => {
+        const div = document.createElement('div');
+        div.className = 'bundle-item';
+        div.innerHTML = `<span>${bundle.size} - ${bundle.price}</span>`;
+        div.onclick = () => {
+          selectedBundle = bundle;
+          Array.from(container.children).forEach(c => c.style.background='rgba(255,255,255,0.1)');
+          div.style.background = '#10b981';
+        };
+        container.appendChild(div);
+      });
+      document.getElementById('bundleTitle').innerText = `${network} Bundles`;
+      document.getElementById('bundleList').style.display = 'block';
+      window.scrollTo({ top: document.getElementById('bundleList').offsetTop, behavior: 'smooth' });
+    }
+
+    function orderBundle() {
+      const phone = document.getElementById('phoneInput').value.trim();
+      if (!selectedBundle || !phone) { alert('Select a bundle and enter your phone number'); return; }
+      const message = `Hello, I want to buy ${selectedBundle.size} (${selectedNetwork}) for ${selectedBundle.price}. My number is ${phone}.`;
+      window.open(`https://wa.me/233541712051?text=${encodeURIComponent(message)}`, '_blank');
+    }
+  </script></body>
+</html>
